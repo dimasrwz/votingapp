@@ -83,48 +83,53 @@ class Candidate {
 class CandidatesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<QuerySnapshot>(
-      stream: FirebaseFirestore.instance.collection('candidate').snapshots(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return CircularProgressIndicator();
-        }
+    return Center(
+      // Tambahkan Center widget di sini
+      child: SingleChildScrollView(
+        child: StreamBuilder<QuerySnapshot>(
+          stream:
+              FirebaseFirestore.instance.collection('candidate').snapshots(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return CircularProgressIndicator();
+            }
 
-        if (!snapshot.hasData || snapshot.data == null) {
-          return Text('Paslon Tidak Ada');
-        }
+            if (!snapshot.hasData || snapshot.data == null) {
+              return Text('Paslon Tidak Ada');
+            }
 
-        var candidates = snapshot.data!.docs;
+            var candidates = snapshot.data!.docs;
 
-        List<Widget> kandidatWidget = [];
+            List<Widget> kandidatWidget = [];
 
-        for (var candidate in candidates) {
-          var kandidatData = candidate.data() as Map<String, dynamic>?;
+            for (var candidate in candidates) {
+              var kandidatData = candidate.data() as Map<String, dynamic>?;
 
-          if (kandidatData != null) {
-            kandidatWidget.add(
-              CandidateCard(
-                candidateName: kandidatData['nama'] ?? '',
-              ),
+              if (kandidatData != null) {
+                kandidatWidget.add(
+                  CandidateCard(
+                    candidateName: kandidatData['nama'] ?? '',
+                  ),
+                );
+              }
+            }
+
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Halaman Kandidat',
+                  style: TextStyle(fontSize: 20),
+                ),
+                SizedBox(height: 16),
+                Column(
+                  children: kandidatWidget,
+                ),
+              ],
             );
-          }
-        }
-
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              'Halaman Kandidat',
-              style: TextStyle(fontSize: 20),
-            ),
-            SizedBox(height: 16),
-            ListView(
-              shrinkWrap: true,
-              children: kandidatWidget,
-            ),
-          ],
-        );
-      },
+          },
+        ),
+      ),
     );
   }
 }

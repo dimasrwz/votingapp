@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:votingapp/pages/user/login_register.dart';
+import 'package:votingapp/pages/voting_page.dart';
 
 void main() {
   runApp(const HomePage());
@@ -13,6 +14,7 @@ class HomePage extends StatelessWidget {
     return MaterialApp(
       routes: {
         '/login': (context) => LoginPage(), // Add this line
+        '/votingpage': (context) => VotingPage(),
       },
       theme: ThemeData.dark().copyWith(
         scaffoldBackgroundColor: const Color.fromARGB(255, 18, 32, 47),

@@ -88,6 +88,28 @@ class _LoginPageState extends State<LoginPage> {
     try {
       await Auth().createUserWithEmailAndPassword(
           email: _controllerEmail.text, password: _controllerPassword.text);
+      // Tampilkan pesan sukses jika user berhasil mendaftar
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Register Successful'),
+            content: Text('Your account has been successfully registered.'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+
+      // Clear the text fields after successful registration
+      _controllerEmail.clear();
+      _controllerPassword.clear();
     } on FirebaseAuthException catch (e) {
       setState(() {
         errorMessage = e.message;
